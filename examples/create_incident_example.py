@@ -1,15 +1,15 @@
-import demisto_client.demisto_api
-from demisto_client.demisto_api.rest import ApiException
+import xsoar_client.xsoar_api
+from xsoar_client.xsoar_api.rest import ApiException
 from datetime import datetime
 import tempfile
 import os
 import time
 
-api_key = None  # set to your 'YOUR_API_KEY' or set environment variable: DEMISTO_API_KEY
-base_url = None  # set to your 'http://DEMISTO_HOST' or set environment variable: DEMISTO_BASE_URL
+api_key = None  # set to your 'YOUR_API_KEY' or set environment variable: XSOAR_API_KEY
+base_url = None  # set to your 'http://XSOAR_HOST' or set environment variable: XSOAR_BASE_URL
 
-api_instance = demisto_client.configure(base_url=base_url, api_key=api_key, debug=True)
-create_incident_request = demisto_client.demisto_api.CreateIncidentRequest()
+api_instance = xsoar_client.configure(base_url=base_url, api_key=api_key, debug=True)
+create_incident_request = xsoar_client.xsoar_api.CreateIncidentRequest()
 
 create_incident_request.name = 'Sample Malware Incident: {}'.format(datetime.now())
 create_incident_request.type = 'Malware'
@@ -19,9 +19,9 @@ create_incident_request.occurred = datetime.now()
 create_incident_request.create_investigation = False  # we set to false as we still neeed to upload a file
 create_incident_request.playbook_id = 'malware_investigation-_generic'
 # If you want to set source_brand and source_instance it is required to set the `Instance` label
-create_incident_request.labels = [demisto_client.demisto_api.Label('Instance', 'Demisto Py Client')]
+create_incident_request.labels = [xsoar_client.xsoar_api.Label('Instance', 'Xsoar Py Client')]
 create_incident_request.source_brand = 'API'
-create_incident_request.source_instance = 'Demisto Py Client'
+create_incident_request.source_instance = 'Xsoar Py Client'
 create_incident_request.custom_fields = {
     'src': '1.1.1.1',
     'dest': '192.168.1.1',

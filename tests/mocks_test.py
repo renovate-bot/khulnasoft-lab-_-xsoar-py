@@ -12,8 +12,8 @@ import pytest
 from pytest_mock.plugin import MockerFixture
 from _pytest.monkeypatch import MonkeyPatch
 
-import demisto_client
-from demisto_client.demisto_api.rest import ApiException, RESTClientObject, RESTResponse
+import xsoar_client
+from xsoar_client.xsoar_api.rest import ApiException, RESTClientObject, RESTResponse
 
 
 TEST_DATA_FOLDER = Path(__file__).parent / 'tests_data'
@@ -28,10 +28,10 @@ def reset_server_configuration_env_vars(monkeypatch: MonkeyPatch):
     Automatically reset the environment variables that are used for server configuration to avoid these
     environment variables from affecting tests.
     """
-    monkeypatch.delenv('DEMISTO_BASE_URL', raising=False)
-    monkeypatch.delenv('DEMISTO_API_KEY', raising=False)
-    monkeypatch.delenv('DEMISTO_USERNAME', raising=False)
-    monkeypatch.delenv('DEMISTO_PASSWORD', raising=False)
+    monkeypatch.delenv('XSOAR_BASE_URL', raising=False)
+    monkeypatch.delenv('XSOAR_API_KEY', raising=False)
+    monkeypatch.delenv('XSOAR_USERNAME', raising=False)
+    monkeypatch.delenv('XSOAR_PASSWORD', raising=False)
     monkeypatch.delenv('XSIAM_AUTH_ID', raising=False)
 
 
@@ -104,7 +104,7 @@ def test_get_docker_images(mocker: MockerFixture):
     })
 
     # Create an instance of the API class
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client, 'request', return_value=mock_response)
 
     api_response = api_instance.get_docker_images()
@@ -152,10 +152,10 @@ def test_create_incident(mocker: MockerFixture):
     })
 
     # Create an instance of the API class
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client, 'request', return_value=mock_response)
 
-    create_incident_request = demisto_client.demisto_api.CreateIncidentRequest()
+    create_incident_request = xsoar_client.xsoar_api.CreateIncidentRequest()
     create_incident_request.name = 'Test Incident'
     create_incident_request.type = 'Unclassified'
     create_incident_request.owner = 'Admin'
@@ -190,7 +190,7 @@ def test_get_reports(mocker: MockerFixture):
         "version": 4
     }])
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client, 'request', return_value=mock_response)
 
     api_response = api_instance.get_all_reports()
@@ -237,10 +237,10 @@ def test_indicators_search(mocker: MockerFixture):
         "total": 1
     })
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client, 'request', return_value=mock_response)
 
-    indicator_filter = demisto_client.demisto_api.IndicatorFilter()  # IndicatorFilter |  (optional)
+    indicator_filter = xsoar_client.xsoar_api.IndicatorFilter()  # IndicatorFilter |  (optional)
     indicator_filter.query = 'value:92.63.197.153'
     api_response = api_instance.indicators_search(indicator_filter=indicator_filter)
 
@@ -252,10 +252,10 @@ def test_indicators_search(mocker: MockerFixture):
 def test_export_entry(mocker: MockerFixture):
     mock_response = create_mock_response(body="entry_artifact_6@1770.md", headers={'Content-Type': 'application/json'})
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client, 'request', return_value=mock_response)
 
-    download_entry = demisto_client.demisto_api.DownloadEntry()  # DownloadEntry |  (optional)
+    download_entry = xsoar_client.xsoar_api.DownloadEntry()  # DownloadEntry |  (optional)
     download_entry.id = '6@1770'
     download_entry.investigation_id = '1770'
     api_result = api_instance.entry_export_artifact(download_entry=download_entry)
@@ -269,7 +269,7 @@ def test_export_entry(mocker: MockerFixture):
 def test_generic_request(mocker: MockerFixture):
     mock_response = create_mock_response(body="All good")
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client, 'request', return_value=mock_response)
 
     res, code, headers = api_instance.generic_request('/test', 'POST', body="This is a test",
@@ -292,7 +292,7 @@ def test_import_layout(mocker: MockerFixture):
     Then
         - The layout is being uploaded and getting back the layout metadata.
     """
-    client = demisto_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
+    client = xsoar_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
     mocker.patch.object(client, 'import_layout_with_http_info', return_value={'test': 'test'})
     res = client.import_layout(str(TEST_DATA_FOLDER / 'layoutscontainer-test.json'))
     assert res.get('test') == 'test'
@@ -307,7 +307,7 @@ def test_import_layout_with_http_info_with_knowing_server_version(mocker: Mocker
     Then
         - The layout is being uploaded and getting back the layout metadata.
     """
-    client = demisto_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
+    client = xsoar_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
     mocker.patch.object(client.api_client, 'call_api', side_effect=[
         ("{'demistoVersion': '6.0.0'}", 200, {'Content-type': 'application/json'}),  {'test': 'test'}
     ])
@@ -324,7 +324,7 @@ def test_import_layout_with_http_info_without_knowing_server_version(mocker: Moc
     Then
         - The layout is being uploaded and getting back the layout metadata.
     """
-    client = demisto_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
+    client = xsoar_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
     mocker.patch.object(client.api_client, 'call_api', side_effect=[
         ("{'demistoVersion': '6.0.0'}", 404, {'Content-type': 'application/json'}),  {'test': 'test'}
     ])
@@ -341,7 +341,7 @@ def test_import_layout_with_http_info_with_old_layout_format(mocker: MockerFixtu
     Then
         - The layout is being uploaded and getting back the layout metadata.
     """
-    client = demisto_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
+    client = xsoar_client.configure(base_url=HOST, api_key=API_KEY, verify_ssl=False)
 
     mocker.patch.object(client.api_client, 'call_api', side_effect=[
         ("{'demistoVersion': '5.0.0'}", 200, {'Content-type': 'application/json'}),  {'test': 'test'}
@@ -365,7 +365,7 @@ def test_generic_request_with_no_env(mocker: MockerFixture):
         headers={'Content-Type': 'text/plain'},
         )
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client.pool_manager, 'request',
                                        return_value=mock_response)
 
@@ -385,11 +385,11 @@ def test_failed_generic_request_with_header_logging(mocker: MockerFixture, monke
     Given:
     - Request which should result in an ApiException
     When:
-    - Environment variable DEMISTO_EXCEPTION_HEADER_LOGGING has been set to true
+    - Environment variable XSOAR_EXCEPTION_HEADER_LOGGING has been set to true
     Then:
     - Return ApiException with the headers in the error
     """
-    monkeypatch.setenv("DEMISTO_EXCEPTION_HEADER_LOGGING", "true")
+    monkeypatch.setenv("XSOAR_EXCEPTION_HEADER_LOGGING", "true")
 
     mock_response = urllib3.response.HTTPResponse(
         status=400,
@@ -397,7 +397,7 @@ def test_failed_generic_request_with_header_logging(mocker: MockerFixture, monke
         headers={'Content-Type': 'text/plain'},
         )
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client.pool_manager, 'request',
                                        return_value=mock_response)
 
@@ -429,7 +429,7 @@ def test_generic_request_with_proxy_authentication(mocker: MockerFixture, monkey
 
     mock_response = create_mock_response(body="Good")
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
     request_mock = mocker.patch.object(api_instance.api_client.rest_client, 'request', return_value=mock_response)
 
     api_instance.generic_request('/test', 'POST',
@@ -452,7 +452,7 @@ def test_import_incidentfields(mocker: MockerFixture):
         Make sure the partial error is returned.
     """
 
-    api_instance = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+    api_instance = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
 
     raw_http_response = urllib3.response.HTTPResponse(body=b'{"incidentFields":[{"id":"evidence_description"}],'
                                                            b'"error":"Partial Error Description"}\n', status=200)
@@ -501,11 +501,11 @@ class TestConfigureClient:
     @staticmethod
     def getenv_decorator(username=None, _api_key=None, additional_headers=None):
         def getenv_side_effect(parameter):
-            if parameter == 'DEMISTO_API_KEY':
+            if parameter == 'XSOAR_API_KEY':
                 return _api_key
-            elif parameter == 'DEMISTO_USERNAME':
+            elif parameter == 'XSOAR_USERNAME':
                 return username
-            elif parameter == 'DEMISTO_HTTP_HEADERS':
+            elif parameter == 'XSOAR_HTTP_HEADERS':
                 return additional_headers
             return None
 
@@ -513,13 +513,13 @@ class TestConfigureClient:
 
     @staticmethod
     def configure_client(_api_key=None, username=None, additional_headers=None):
-        if not (_api_key or os.getenv('DEMISTO_API_KEY')) and not (username or os.getenv('DEMISTO_USERNAME')):
+        if not (_api_key or os.getenv('XSOAR_API_KEY')) and not (username or os.getenv('XSOAR_USERNAME')):
             with pytest.raises(ValueError):
-                demisto_client.configure(
+                xsoar_client.configure(
                     base_url=HOST, api_key=_api_key, username=username, additional_headers=additional_headers
                 )
         else:
-            return demisto_client.configure(
+            return xsoar_client.configure(
                 base_url=HOST, api_key=_api_key, username=username, additional_headers=additional_headers
             )
 
@@ -676,7 +676,7 @@ class TestConfigureClient:
         )
 
         with pytest.raises(ValueError) as exc:
-            demisto_client.configure(base_url=HOST, api_key=API_KEY)
+            xsoar_client.configure(base_url=HOST, api_key=API_KEY)
 
         assert exc.value.args[0] == f'{invalid_additional_headers} has invalid format, must be in the format ' \
                                     f'of header1=value1,header2=value2,...headerN=valueN'
@@ -751,5 +751,5 @@ class TestConfigureClient:
             side_effect=self.getenv_decorator(additional_headers=valid_additional_headers)
         )
 
-        client = demisto_client.configure(base_url=HOST, api_key=API_KEY)
+        client = xsoar_client.configure(base_url=HOST, api_key=API_KEY)
         assert expected_headers_as_dict.items() <= client.api_client.default_headers.items()

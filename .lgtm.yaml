@@ -4,4 +4,4 @@ path_classifiers:
   example:
     - "/examples"
   generated:
-    - "/demisto_client/demisto_api"
+    - "/xsoar_client/xsoar_api"

@@ -1,6 +1,6 @@
 # download test
 import sys
-import demisto_client.demisto_api
+import xsoar_client.xsoar_api
 
 
 def main():
@@ -9,10 +9,10 @@ def main():
         sys.exit(1)
     eid = sys.argv[1]
     print("Downloading file from entry id: {}".format(eid))
-    api_key = None  # set to your 'YOUR_API_KEY' or set environment variable: DEMISTO_API_KEY
-    base_url = None  # set to your 'http://DEMISTO_HOST' or set environment variable: DEMISTO_BASE_URL
+    api_key = None  # set to your 'YOUR_API_KEY' or set environment variable: XSOAR_API_KEY
+    base_url = None  # set to your 'http://XSOAR_HOST' or set environment variable: XSOAR_BASE_URL
 
-    api_instance = demisto_client.configure(base_url=base_url, api_key=api_key, debug=False)
+    api_instance = xsoar_client.configure(base_url=base_url, api_key=api_key, debug=False)
     res_download = api_instance.download_file(eid)
     print("Download file is available at: {}".format(res_download))
     print("Downloading again the file but not storing to disk (_preload_content=False)...")

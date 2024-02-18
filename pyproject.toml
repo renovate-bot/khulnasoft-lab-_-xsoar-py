@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "demisto-py"
+name = "xsoar-py"
 version = "3.2.14"
-description = "\"A Python library for the Demisto API\""
-authors = ["Demisto"]
+description = "\"A Python library for the Xsoar API\""
+authors = ["KhulnaSoft-Lab"]
 license = "Apache-2.0"
 readme = "README.md"
-packages = [{include = "demisto_client"}]
-homepage = "https://github.com/demisto/demisto-py"
-keywords=["Swagger", "Demisto API"]
+packages = [{include = "xsoar_client"}]
+homepage = "https://github.com/khulnasoft-lab/xsoar-py"
+keywords=["Swagger", "Xsoar API"]
 classifiers=[
         'Intended Audience :: Developers',
         'Natural Language :: English',

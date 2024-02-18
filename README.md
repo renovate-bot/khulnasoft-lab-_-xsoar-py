@@ -1,88 +1,88 @@
-# Demisto Client for Python
+# Xsoar Client for Python
 
-[![PyPI version](https://badge.fury.io/py/demisto-py.svg)](https://badge.fury.io/py/demisto-py)
-[![CircleCI](https://circleci.com/gh/demisto/demisto-py/tree/master.svg?style=svg)](https://circleci.com/gh/demisto/demisto-py/tree/master)
+[![PyPI version](https://badge.fury.io/py/xsoar-py.svg)](https://badge.fury.io/py/xsoar-py)
+[![CircleCI](https://circleci.com/gh/khulnasoft-lab/xsoar-py/tree/master.svg?style=svg)](https://circleci.com/gh/khulnasoft-lab/xsoar-py/tree/master)
 
 
-A Python library for the Demisto API.
+A Python library for the Xsoar API.
 
-Version 2.x is compatible with Demisto server version 4.5 and later.
+Version 2.x is compatible with Xsoar server version 4.5 and later.
 
-## Demisto for Python Usage
+## Xsoar for Python Usage
 
 This section covers the steps you need to take to get the client configured.
 
-### 1. Get a Demisto API Key
+### 1. Get a Xsoar API Key
 
-Follow these instructions to generate your Demisto API Key.
+Follow these instructions to generate your Xsoar API Key.
 
-1. In Demisto, navigate to **Settings > API Keys**.
+1. In Xsoar, navigate to **Settings > API Keys**.
 2. Click the **Generate Your Key** button.
 
 To avoid hard coding configurations in your code, it is possible to specify configuration params
 as the following environment variables (env variables will be used if parameters are not specified):
 
-* DEMISTO_BASE_URL
-* DEMISTO_API_KEY
-* DEMISTO_ADVANCED_API_KEY
-* DEMISTO_USERNAME
-* DEMISTO_PASSWORD
-* DEMISTO_HTTP_HEADERS (must be in the form of: header1=value1,header2=value2,header3=value3,...headerN=valueN)
-* DEMISTO_VERIFY_SSL (true/false. Default: true)
-* DEMISTO_API_KEY_ID (for Cortex XSIAM only. If set, Cortex XSIAM API will be used)
+* XSOAR_BASE_URL
+* XSOAR_API_KEY
+* XSOAR_ADVANCED_API_KEY
+* XSOAR_USERNAME
+* XSOAR_PASSWORD
+* XSOAR_HTTP_HEADERS (must be in the form of: header1=value1,header2=value2,header3=value3,...headerN=valueN)
+* XSOAR_VERIFY_SSL (true/false. Default: true)
+* XSOAR_API_KEY_ID (for Cortex XSIAM only. If set, Cortex XSIAM API will be used)
 * SSL_CERT_FILE (specify an alternate certificate bundle)
 
-### 2. Create a Demisto client instance with the api-key and server-url
+### 2. Create a Xsoar client instance with the api-key and server-url
 
 ```python
-import demisto_client
+import xsoar_client
 
-# Also possible to set env variables: DEMISTO_API_KEY and DEMISTO_BASE_URL
+# Also possible to set env variables: XSOAR_API_KEY and XSOAR_BASE_URL
 api_key = 'YOUR_API_KEY'
-host = 'https://YOUR_DEMISTO_HOST'
+host = 'https://YOUR_XSOAR_HOST'
 
-api_instance = demisto_client.configure(base_url=host, api_key=api_key)
+api_instance = xsoar_client.configure(base_url=host, api_key=api_key)
 
 ```
 
 **For Cortex XSIAM, we need to set the auth_id**
 ```python
-import demisto_client
+import xsoar_client
 
-# Also possible to set env variables: DEMISTO_API_KEY, DEMISTO_BASE_URL and DEMISTO_API_KEY_ID
+# Also possible to set env variables: XSOAR_API_KEY, XSOAR_BASE_URL and XSOAR_API_KEY_ID
 api_key = 'YOUR_API_KEY'
 auth_id = 'THE AUTHORIZATION ID'
 host = 'https://YOUR_XSIAM_HOST'
 
-api_instance = demisto_client.configure(base_url=host, api_key=api_key, auth_id=auth_id)
+api_instance = xsoar_client.configure(base_url=host, api_key=api_key, auth_id=auth_id)
 
 ```
 
 **Alternatively, you can login with username and password (only in xsoar):**
 
 ```python
-import demisto_client
+import xsoar_client
 
-# Also possible to set env variables: DEMISTO_USERNAME DEMISTO_PASSWORD and DEMISTO_BASE_URL
-host = 'https://YOUR_DEMISTO_HOST'
+# Also possible to set env variables: XSOAR_USERNAME XSOAR_PASSWORD and XSOAR_BASE_URL
+host = 'https://YOUR_XSOAR_HOST'
 username = 'YOUR_USERNAME'
 password = 'YOUR_PASSWORD'
 
-api_instance = demisto_client.configure(base_url=host, username=username, password=password)
+api_instance = xsoar_client.configure(base_url=host, username=username, password=password)
 ```
 
 ### 3. Create incidents
 
 ```python
-import demisto_client.demisto_api
-from demisto_client.demisto_api.rest import ApiException
+import xsoar_client.xsoar_api
+from xsoar_client.xsoar_api.rest import ApiException
 
 
 api_key = 'YOUR_API_KEY'
-host = 'https://YOUR_DEMISTO_HOST'
+host = 'https://YOUR_XSOAR_HOST'
 
-api_instance = demisto_client.configure(base_url=host, api_key=api_key, debug=False)
-create_incident_request = demisto_client.demisto_api.CreateIncidentRequest()
+api_instance = xsoar_client.configure(base_url=host, api_key=api_key, debug=False)
+create_incident_request = xsoar_client.xsoar_api.CreateIncidentRequest()
 
 create_incident_request.name = 'Sample Simulation Incident'
 create_incident_request.type = 'Simulation'
@@ -102,7 +102,7 @@ Additional examples available in the [docs](docs/README.md) and under the [examp
 
 ## API Documentation
 
-API Documentation based upon the Demisto Server Swagger API is available [here](docs/README.md)
+API Documentation based upon the Xsoar Server Swagger API is available [here](docs/README.md)
 
 ---
 
@@ -145,15 +145,15 @@ Contributions are welcome and appreciated. To contribute follow the instructions
 
 Before merging any PRs, we need all contributors to sign a contributor license agreement. By signing a contributor license agreement, we ensure that the community is free to use your contributions.
 
-When you open a new pull request, a bot will evaluate whether you have signed the CLA. If required, the bot will comment on the pull request, including a link to accept the agreement. The CLA document is also available for review as a [PDF](https://github.com/demisto/content/blob/master/docs/cla.pdf).
+When you open a new pull request, a bot will evaluate whether you have signed the CLA. If required, the bot will comment on the pull request, including a link to accept the agreement. The CLA document is also available for review as a [PDF](https://github.com/khulnasoft-lab/content/blob/master/docs/cla.pdf).
 
-If the `license/cla` status check remains on *Pending*, even though all contributors have accepted the CLA, you can recheck the CLA status by visiting the following link (replace **[PRID]** with the ID of your PR): <https://cla-assistant.io/check/demisto/demisto-py?pullRequest=[PRID>] .
+If the `license/cla` status check remains on *Pending*, even though all contributors have accepted the CLA, you can recheck the CLA status by visiting the following link (replace **[PRID]** with the ID of your PR): <https://cla-assistant.io/check/khulnasoft-lab/xsoar-py?pullRequest=[PRID>] .
 
 ---
 
 ## Dev Environment Setup
 
-We will now setup a quick virtualenv in which we will install the `demisto-py` version you are currently working on.
+We will now setup a quick virtualenv in which we will install the `xsoar-py` version you are currently working on.
 This will be used as your testing environment, you do not need to update it again or re-run in any way.
 
 1. Make sure you have python3 installed.
@@ -164,7 +164,7 @@ This will be used as your testing environment, you do not need to update it agai
 
 4. For further reading about Poetry, you can refer to [Poetry documentation](https://python-poetry.org/).
 
-You have now setup the your `demisto-py` dev environment!
+You have now setup the your `xsoar-py` dev environment!
 
 To activate it simply run: `poetry shell`.
 
@@ -181,16 +181,16 @@ Simply use `poetry` to run your tests on a relevant folder. For example:
 poetry run python -m pytest tests
 ```
 
-To run with a specific python version (see the [demisto-py PyPi page](https://pypi.org/project/demisto-py/) for the current supported versions), use [poetry environments](https://python-poetry.org/docs/managing-environments/) to switch to a different env with a different python version.
+To run with a specific python version (see the [xsoar-py PyPi page](https://pypi.org/project/xsoar-py/) for the current supported versions), use [poetry environments](https://python-poetry.org/docs/managing-environments/) to switch to a different env with a different python version.
 
 ---
 
 
 ## Code Generation
 
-Library code was generated using the Demisto Server 4.5.0 Swagger definition with modifications to support later Server versions.
+Library code was generated using the Xsoar Server 4.5.0 Swagger definition with modifications to support later Server versions.
 
-**Important:** All code under [demisto_client/demisto_api](demisto_client/demisto_api) is generated using the swagger code generation tool. Do not modify this code directly.
+**Important:** All code under [xsoar_client/xsoar_api](xsoar_client/xsoar_api) is generated using the swagger code generation tool. Do not modify this code directly.
 
 We use a script to run the generate tool and then modify as needed.
 If you would like to contribute **DO NOT** modify the generated code directly, modify the script: [gen-code.sh](gen-code.sh) and then re-generate the code.
@@ -205,12 +205,12 @@ To generate the code run (requires bash, sed and docker):
 
 ## Publishing a Release (demisto devs)
 
-After merging to `master`, a test deployment will be pushed to: <https://test.pypi.org/project/demisto-py/> .
+After merging to `master`, a test deployment will be pushed to: <https://test.pypi.org/project/xsoar-py/> .
 You can test the test package by following the pip install instructions.
 For example:
 
 ```bash
-pip install -i https://test.pypi.org/simple/ demisto-py
+pip install -i https://test.pypi.org/simple/ xsoar-py
 ```
 
 Steps to publish a production release:
@@ -225,8 +225,8 @@ For example:
   git push origin v2.0.19
   ```
 
-* Check that the circleci build completes successfully. Once done, the release will be pushed to: <https://pypi.org/project/demisto-py/> .
-* Update GitHub releases: go to [tags page](https://github.com/demisto/demisto-py/tags) and for the relevant tag choose from the right drop down menu: `Create release`. Name the release the same as the tag. Copy the text from previous releases for the description.
+* Check that the circleci build completes successfully. Once done, the release will be pushed to: <https://pypi.org/project/xsoar-py/> .
+* Update GitHub releases: go to [tags page](https://github.com/khulnasoft-lab/xsoar-py/tags) and for the relevant tag choose from the right drop down menu: `Create release`. Name the release the same as the tag. Copy the text from previous releases for the description.
 
 Congratulations! The release is now public.
 

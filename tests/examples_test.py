@@ -1,5 +1,5 @@
 import pprint
-from demisto_client.demisto_api import rest
+from xsoar_client.xsoar_api import rest
 
 UPDATE_AUTOMATION_EXAMPLE_PATH = './examples/update_automation_example.py'
 

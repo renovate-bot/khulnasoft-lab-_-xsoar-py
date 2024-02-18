@@ -1,6 +1,6 @@
 # Changelog
 
-[PyPI History](https://pypi.org/project/demisto-py/#history)
+[PyPI History](https://pypi.org/project/xsoar-py/#history)
 
 ## 3.2.14
 * Added support for Python versions 3.11 and 3.12.
@@ -13,7 +13,7 @@
 
 ## 3.2.11
 * Added advanced key authentication support for XSIAM and XSOAR 8+.
-* Added support for `DEMISTO_API_KEY_ID` and deprecated old `XSIAM_AUTH_ID`.
+* Added support for `XSOAR_API_KEY_ID` and deprecated old `XSIAM_AUTH_ID`.
 
 ## 3.2.10
 * Added URL decoding of proxy url credentials.
@@ -22,19 +22,19 @@
 * Added the ability to add custom request headers.
 
 ## 3.2.8
-* Fixed an issue where demisto-py used username/password authentication even when api-key was provided.
+* Fixed an issue where xsoar-py used username/password authentication even when api-key was provided.
 
 ## 3.2.7
-* Added an ability to change `DEMISTO_BASE_URL` environment variable to api url, when using XSIAM.
+* Added an ability to change `XSOAR_BASE_URL` environment variable to api url, when using XSIAM.
 
 ## 3.2.6
 * Added support for proxy basic authentication.
 
 ## 3.2.5
-* Fixed an issue where demisto-py failed to upload content to XSIAM when `DEMISTO_USERNAME` environment variable is set.
+* Fixed an issue where xsoar-py failed to upload content to XSIAM when `XSOAR_USERNAME` environment variable is set.
 
 ## 3.2.4
-* Fixed an issue where demisto-py did not return partial errors when importing incident fields.
+* Fixed an issue where xsoar-py did not return partial errors when importing incident fields.
 
 ## 3.2.3
 * Add reputation routes.
@@ -52,10 +52,10 @@
 * Replaced the usage of the deprecated function `pytz.localize()`.
 
 ## 3.1.6
-* Added a proxy environment variable that uses BASE_URL_DEMISTO.
+* Added a proxy environment variable that uses BASE_URL_XSOAR.
 
 ## 3.1.5
-* Fixed an issue where demisto-py failed when receiving `application/gzip`-encoded responses.
+* Fixed an issue where xsoar-py failed when receiving `application/gzip`-encoded responses.
 
 ## 3.1.4
 
@@ -85,11 +85,11 @@
 
 ## 3.0.1
 
-* Support setting the number of parallel connections to a single host via the `DEMISTO_CONNECTION_POOL_MAXSIZE` environment variable.
+* Support setting the number of parallel connections to a single host via the `XSOAR_CONNECTION_POOL_MAXSIZE` environment variable.
 
 ## 3.0.0
 
-* Drop support for Python 2. demisto-py now requires Python 3.7 or later. Pin to demisto-py <2.0.24 to maintain 2.7 support.
+* Drop support for Python 2. xsoar-py now requires Python 3.7 or later. Pin to xsoar-py <2.0.24 to maintain 2.7 support.
 * Fixed bug in arguments required for the route: `/v2/inv-playbook/task/form/submit`.
 
 ## 2.0.23
@@ -102,7 +102,7 @@
 
 ## 2.0.20
 
-* Log only headers in exceptions when `DEMISTO_EXCEPTION_HEADER_LOGGING` environment variable is set to true. This protects against possible sensitive data being logged in exceptions.
+* Log only headers in exceptions when `XSOAR_EXCEPTION_HEADER_LOGGING` environment variable is set to true. This protects against possible sensitive data being logged in exceptions.
 
 ## 2.0.19
 
@@ -125,14 +125,14 @@ Fixed an issue where the attribute mapping for the `search_incidents` model was 
 
 ## 2.0.11
 
-* Added `import_playbook` method for importing a playbook to Demisto.
-* Added `import_script` method for importing a script to Demisto.
-* Added `import_incident_fields` method for importing an incident field to Demisto.
-* Added `import_incident_types_handler` method for importing an incident type to Demisto.
-* Added `import_widget` method for import a widget to Demisto.
-* Added `import_dashboard` method for import a dashboard to Demisto.
-* Added `import_classifier` method for importing a classifier to Demisto.
-* Added `import_layout` method for importing a layout to Demisto.
+* Added `import_playbook` method for importing a playbook to Xsoar.
+* Added `import_script` method for importing a script to Xsoar.
+* Added `import_incident_fields` method for importing an incident field to Xsoar.
+* Added `import_incident_types_handler` method for importing an incident type to Xsoar.
+* Added `import_widget` method for import a widget to Xsoar.
+* Added `import_dashboard` method for import a dashboard to Xsoar.
+* Added `import_classifier` method for importing a classifier to Xsoar.
+* Added `import_layout` method for importing a layout to Xsoar.
 
 ## 2.0.10
 
@@ -146,14 +146,14 @@ Fixed an issue where the attribute mapping for the `search_incidents` model was 
 
 * Added `ssl_ca_cert` configuration option to specify an alternate certificate bundle.
 * Added support for additional configuration environment variables:
-  * `DEMISTO_VERIFY_SSL`
+  * `XSOAR_VERIFY_SSL`
   * `SSL_CERT_FILE`
 
 ## 2.0.7
 
 * Added `investigation_add_entries_sync` method creating a new entry in existing investigation.
 * Added `download_file` method for downloading files by entry id.
-* Added `integration_upload` method for uploading integrations to Demisto.
+* Added `integration_upload` method for uploading integrations to Xsoar.
 
 ## 2.0.6
 
@@ -169,7 +169,7 @@ Fixed missing dependency (tzlocal).
 
 ## 2.0.3
 
-* Fixed issue in `generic_request` where body was being ignored ([#20](https://github.com/demisto/demisto-py/issues/20)) .
+* Fixed issue in `generic_request` where body was being ignored ([#20](https://github.com/khulnasoft-lab/xsoar-py/issues/20)) .
 * Added `content_type` and `accept` parameters to `generic_request`.
 * Fixed `datetime` object formatting to include timezone offset as specified in RFC 3339.
 
@@ -185,8 +185,8 @@ Improved the changelog and documentation.
 
 ## 2.0.0
 
-Initial release of new Swagger based API for Demisto Server 4.5.0 and up.
+Initial release of new Swagger based API for Xsoar Server 4.5.0 and up.
 
 ## 1.0.0
 
-Deprecated: demisto-py 1.x is officially in maintenance-mode only and can be obtained at: <https://github.com/demisto/demisto-py/releases> .
+Deprecated: xsoar-py 1.x is officially in maintenance-mode only and can be obtained at: <https://github.com/khulnasoft-lab/xsoar-py/releases> .

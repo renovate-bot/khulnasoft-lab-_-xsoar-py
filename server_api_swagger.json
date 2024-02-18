@@ -11,8 +11,8 @@
   ],
   "swagger": "2.0",
   "info": {
-    "description": "This is the public REST API to integrate with the demisto server.\nHTTP request can be sent using any HTTP-client.\n\nFor an example dedicated client take a look at: https://github.com/demisto/demisto-py.\n\nRequests must include API-key that can be generated in the Demisto web client under 'Settings' -\u003e 'Integrations' -\u003e 'API keys'\n\n\nOptimistic Locking and Versioning\\:\n\nWhen using Demisto REST API, you will need to make sure to work on the latest version of the item (incident, entry, etc.), otherwise, you will get a DB version error (which not allow you to override a newer item).\nIn addition, you can pass 'version\\: -1' to force data override (make sure that other users data might be lost).\n\nAssume that Alice and Bob both read the same data from Demisto server, then they both changed the data, and then both tried to write the new versions back to the server. Whose changes should be saved? Alice’s? Bob’s?\nTo solve this, each data item in Demisto has a numeric incremental version.\nIf Alice saved an item with version 4 and Bob trying to save the same item with version 3, Demisto will rollback Bob request and returns a DB version conflict error.\nBob will need to get the latest item and work on it so Alice work will not get lost.\n\nExample request using 'curl'\\:\n\n```\ncurl 'https://hostname:443/incidents/search' -H 'content-type: application/json' -H 'accept: application/json' -H 'Authorization: \u003cAPI Key goes here\u003e' --data-binary '{\"filter\":{\"query\":\"-status:closed -category:job\",\"period\":{\"by\":\"day\",\"fromValue\":7}}}' --compressed\n```",
-    "title": "Demisto API",
+    "description": "This is the public REST API to integrate with the demisto server.\nHTTP request can be sent using any HTTP-client.\n\nFor an example dedicated client take a look at: https://github.com/khulnasoft-lab/xsoar-py.\n\nRequests must include API-key that can be generated in the Xsoar web client under 'Settings' -\u003e 'Integrations' -\u003e 'API keys'\n\n\nOptimistic Locking and Versioning\\:\n\nWhen using Xsoar REST API, you will need to make sure to work on the latest version of the item (incident, entry, etc.), otherwise, you will get a DB version error (which not allow you to override a newer item).\nIn addition, you can pass 'version\\: -1' to force data override (make sure that other users data might be lost).\n\nAssume that Alice and Bob both read the same data from Xsoar server, then they both changed the data, and then both tried to write the new versions back to the server. Whose changes should be saved? Alice’s? Bob’s?\nTo solve this, each data item in Xsoar has a numeric incremental version.\nIf Alice saved an item with version 4 and Bob trying to save the same item with version 3, Xsoar will rollback Bob request and returns a DB version conflict error.\nBob will need to get the latest item and work on it so Alice work will not get lost.\n\nExample request using 'curl'\\:\n\n```\ncurl 'https://hostname:443/incidents/search' -H 'content-type: application/json' -H 'accept: application/json' -H 'Authorization: \u003cAPI Key goes here\u003e' --data-binary '{\"filter\":{\"query\":\"-status:closed -category:job\",\"period\":{\"by\":\"day\",\"fromValue\":7}}}' --compressed\n```",
+    "title": "Xsoar API",
     "version": "2.0.0"
   },
   "host": "hostname:443",
@@ -286,7 +286,7 @@
     },
     "/entry/download/{entryid}": {
       "get": {
-        "description": "Download file from Demisto by entry ID",
+        "description": "Download file from Xsoar by entry ID",
         "produces": [
           "application/octet-stream"
         ],
@@ -508,7 +508,7 @@
     },
     "/incident": {
       "post": {
-        "description": "Create or update incident according to JSON structure.\nTo update incident custom fields you should lowercase them and remove all spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Demisto CLI and run /incident_add and look for the key that you would like to update\n\nUse the 'createInvestigation\\: True' to start the investigation process automatically. (by running a playbook based on incident type.)",
+        "description": "Create or update incident according to JSON structure.\nTo update incident custom fields you should lowercase them and remove all spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Xsoar CLI and run /incident_add and look for the key that you would like to update\n\nUse the 'createInvestigation\\: True' to start the investigation process automatically. (by running a playbook based on incident type.)",
         "summary": "Create single incident",
         "operationId": "createIncident",
         "parameters": [
@@ -532,7 +532,7 @@
     },
     "/incident/batch": {
       "post": {
-        "description": "Create or update an incidents batch\nTo update incident custom fields you should lowercase them and remove all spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Demisto CLI and run /incident_add and look for the key that you would like to update",
+        "description": "Create or update an incidents batch\nTo update incident custom fields you should lowercase them and remove all spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Xsoar CLI and run /incident_add and look for the key that you would like to update",
         "summary": "Batch create incidents",
         "operationId": "createIncidentsBatch",
         "parameters": [
@@ -580,7 +580,7 @@
     },
     "/incident/batchClose": {
       "post": {
-        "description": "Closes an incidents batch\nTo update incident custom fields you should lowercase them and remove all spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Demisto CLI and run /incident_add and look for the key that you would like to update",
+        "description": "Closes an incidents batch\nTo update incident custom fields you should lowercase them and remove all spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Xsoar CLI and run /incident_add and look for the key that you would like to update",
         "summary": "Batch close incidents",
         "operationId": "closeIncidentsBatch",
         "parameters": [
@@ -1633,14 +1633,14 @@
     },
     "/reports/upload": {
       "post": {
-        "description": "Upload report file to Demisto",
+        "description": "Upload report file to Xsoar",
         "consumes": [
           "multipart/form-data"
         ],
         "produces": [
           "application/json"
         ],
-        "summary": "Upload report file to Demisto",
+        "summary": "Upload report file to Xsoar",
         "operationId": "uploadReport",
         "parameters": [
           {
@@ -1757,7 +1757,7 @@
     },
     "/settings/integration-conf/upload": {
       "post": {
-        "description": "Upload an integration to Demisto",
+        "description": "Upload an integration to Xsoar",
         "consumes": [
           "multipart/form-data"
         ],
@@ -2114,7 +2114,7 @@
           "x-go-name": "Simple"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ArgAtomicFilter": {
       "description": "ArgAtomicFilter - operator with two sides that return true/false",
@@ -2138,7 +2138,7 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ArgFilter": {
       "description": "ArgFilter - represent a slice of atomic filters with OR condition between them (e.i. - atomic1 OR atomic2 OR ...)",
@@ -2146,7 +2146,7 @@
       "items": {
         "$ref": "#/definitions/ArgAtomicFilter"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ArgTransformer": {
       "type": "object",
@@ -2159,7 +2159,7 @@
           "$ref": "#/definitions/TransformerOperatorID"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Argument": {
       "description": "Argument to a module command",
@@ -2209,7 +2209,7 @@
           "x-go-name": "Secret"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ArrayPositions": {
       "type": "array",
@@ -2217,7 +2217,7 @@
         "type": "integer",
         "format": "uint64"
       },
-      "x-go-package": "github.com/demisto/server/vendor/github.com/blevesearch/bleve/search"
+      "x-go-package": "github.com/khulnasoft-lab/server/vendor/github.com/blevesearch/bleve/search"
     },
     "Attachment": {
       "type": "object",
@@ -2244,7 +2244,7 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Audit": {
       "description": "Audit holds the auditing details. This includes all common fields, the action in a string blob and the user who\nperformed the action in a user struct.",
@@ -2295,7 +2295,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "AutomationScript": {
       "description": "AutomationScript represents a script that will run on  the system",
@@ -2489,7 +2489,7 @@
           "x-go-name": "VisualScript"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "AutomationScriptAPI": {
       "type": "object",
@@ -2605,7 +2605,7 @@
           "x-go-name": "Version"
         }
       },
-      "x-go-package": "github.com/demisto/server/services"
+      "x-go-package": "github.com/khulnasoft-lab/server/services"
     },
     "Command": {
       "description": "Command supported by a module",
@@ -2670,7 +2670,7 @@
           "x-go-name": "Timeout"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "CommonFields": {
       "description": "CommonFields holds the common fields to all entities",
@@ -2698,7 +2698,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ComplexArg": {
       "description": "ComplexArg - all info that is necessary to compute argument value from context\nRoot - the root slice (or object) from to work against\nFilters - a slice of filters to apply to the root object, one after another (e.i. with AND condition between each one)\nAccessor - the key to access to each result after filter\nTransformers - a slice to transformers to apply on the result of the accessed key from each result\ne.g. if user want to take from context all File.DisplayName where File.Extension is 'EXE', and the result in uppercase than:\nRoot: is \"File\"\nFilters: will hold the \"File.DisplayName where File.Extension is 'EXE'\" query\nAccessor: is \"DisplayName\"\nTransformers: will hold the uppercase transformation",
@@ -2727,13 +2727,13 @@
           "x-go-name": "Transformers"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ConfigDataType": {
       "description": "ConfigDataType holds the type of a configuration field or command argument",
       "type": "number",
       "format": "double",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ConfigField": {
       "description": "ConfigField holds a configuration field",
@@ -2774,7 +2774,7 @@
           "$ref": "#/definitions/ConfigDataType"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "CreateIncidentRequest": {
       "description": "CreateIncidentRequest is an extension for Incident entity, with additional field of changed-status for the web client",
@@ -3062,16 +3062,16 @@
       "additionalProperties": {
         "type": "object"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "CustomFields": {
-      "description": "The keys should be the field's display name all lower and without spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Demisto CLI and run /incident_add and look for the key that you would like to update",
+      "description": "The keys should be the field's display name all lower and without spaces. For example: Scan IP -\u003e scanip\nTo get the actual key name you can also go to Xsoar CLI and run /incident_add and look for the key that you would like to update",
       "type": "object",
       "title": "CustomFields ...",
       "additionalProperties": {
         "type": "object"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "DBotScore": {
       "description": "DBotScore - Contain the score of a specific brand for a specific insight",
@@ -3117,7 +3117,7 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Dashboard": {
       "type": "object",
@@ -3202,7 +3202,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "DataCollectionForm": {
       "type": "object",
@@ -3237,7 +3237,7 @@
           "x-go-name": "TotalAnswers"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "DateRange": {
       "description": "DateRange provides common fields for date filtering",
@@ -3262,7 +3262,7 @@
           "x-go-name": "ToDate"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "DateRangeFilter": {
       "description": "DateRangeFilter provides common fields for date filtering",
@@ -3290,7 +3290,7 @@
           "x-go-name": "ToDate"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "DownloadEntry": {
       "type": "object",
@@ -3305,7 +3305,7 @@
           "x-go-name": "InvestigationID"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "Duration": {
       "description": "A Duration represents the elapsed time between two instants\nas an int64 nanosecond count. The representation limits the\nlargest representable duration to approximately 290 years.",
@@ -3316,7 +3316,7 @@
     "EndingType": {
       "description": "EndingType holds the type of schedule Ending",
       "type": "string",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Entry": {
       "description": "Entry holds a single entry in an investigation. Entries entered within a short amount of time by the same user are combined",
@@ -3566,12 +3566,12 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "EntryCategory": {
       "type": "string",
       "title": "EntryCategory ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "EntryHistory": {
       "type": "object",
@@ -3595,7 +3595,7 @@
           "x-go-name": "User"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "EntryReputation": {
       "description": "EntryReputation holds the entry reputations and the highlights",
@@ -3612,7 +3612,7 @@
           "x-go-name": "ReputationsData"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "EntryTask": {
       "description": "EntryTask holds information regarding the related task",
@@ -3635,13 +3635,13 @@
           "x-go-name": "TaskStatus"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "EntryType": {
       "description": "EntryType specifies the type of the entry",
       "type": "number",
       "format": "double",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Evidence": {
       "type": "object",
@@ -3756,7 +3756,7 @@
       "additionalProperties": {
         "type": "object"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "EvidenceData": {
       "description": "EvidenceData - all evidence properties to evaluate in task process",
@@ -3780,7 +3780,7 @@
           "$ref": "#/definitions/AdvanceArg"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Evidences": {
       "description": "Evidences is a list of evidence entities",
@@ -3788,7 +3788,7 @@
       "items": {
         "$ref": "#/definitions/Evidence"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "EvidencesSearchResponse": {
       "description": "EvidencesSearchResponse returns the response from the evidences search",
@@ -3803,17 +3803,17 @@
           "x-go-name": "Total"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "ExpirationPolicy": {
       "type": "string",
       "title": "ExpirationPolicy ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ExpirationSettingsSource": {
       "type": "string",
       "title": "ExpirationSettingsSource ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ExpirationSource": {
       "type": "object",
@@ -3852,7 +3852,7 @@
           "x-go-name": "User"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "FeedIndicator": {
       "type": "object",
@@ -3944,7 +3944,7 @@
           "x-go-name": "Value"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "FeedIndicators": {
       "type": "array",
@@ -3952,7 +3952,7 @@
       "items": {
         "$ref": "#/definitions/FeedIndicator"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "FeedIndicatorsRequest": {
       "description": "FeedIndicatorsRequest is the input for JSON feed indicator ingestion",
@@ -3978,7 +3978,7 @@
           "x-go-name": "MapperID"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "RawFeedIndicator": {
       "description": "RawFeedIndicator is an unparsed feed indicator from JSON ingestion",
@@ -3986,13 +3986,13 @@
       "additionalProperties": {
         "type": "object"
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "FieldGroup": {
       "description": "FieldGroup is the field group",
       "type": "number",
       "format": "double",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "FieldMapping": {
       "description": "FieldMapping - Map a task output (complex or simple value) to an incident field",
@@ -4006,14 +4006,14 @@
           "$ref": "#/definitions/AdvanceArg"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "FieldTermLocationMap": {
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/TermLocationMap"
       },
-      "x-go-package": "github.com/demisto/server/vendor/github.com/blevesearch/bleve/search"
+      "x-go-package": "github.com/khulnasoft-lab/server/vendor/github.com/blevesearch/bleve/search"
     },
     "FileMetadata": {
       "type": "object",
@@ -4057,17 +4057,17 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "FilterCache": {
       "type": "object",
       "title": "FilterCache ...",
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "FilterOperatorID": {
       "type": "string",
       "title": "FilterOperatorID ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "FormDisplay": {
       "type": "object",
@@ -4106,7 +4106,7 @@
           "x-go-name": "SubmitText"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "GenericStringDateFilter": {
       "description": "GenericStringDateFilter is a general filter that will fetch entities using the Query value and a date filter",
@@ -4184,7 +4184,7 @@
           "x-go-name": "ToDate"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "GenericStringFilter": {
       "description": "GenericStringFilter is a general filter that will fetch entities using the Query value",
@@ -4241,7 +4241,7 @@
           "x-go-name": "Sort"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "GridColumn": {
       "type": "object",
@@ -4292,7 +4292,7 @@
           "x-go-name": "Width"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Group": {
       "type": "object",
@@ -4315,7 +4315,7 @@
           "x-go-name": "Name"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "Groups": {
       "description": "Groups is a list of group entities",
@@ -4323,7 +4323,7 @@
       "items": {
         "$ref": "#/definitions/Group"
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "HumanCron": {
       "type": "object",
@@ -4363,7 +4363,7 @@
           "x-go-name": "TimePeriodType"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Important": {
       "description": "Important The important outputs of a given command",
@@ -4384,7 +4384,7 @@
           "x-go-name": "Related"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Incident": {
       "description": "An incident can be manually opened algorithmically or arrive from an external source like SIEM.\nIf you add fields, make sure to add them to the mapping as well.\nIf adding a user controlled field, please\nmake sure to add it to the CopyFrom  and getIncidentFieldString (in services package) methods.",
@@ -4677,7 +4677,7 @@
       "additionalProperties": {
         "type": "object"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IncidentField": {
       "type": "object",
@@ -4873,7 +4873,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IncidentFilter": {
       "type": "object",
@@ -5133,7 +5133,7 @@
           "x-go-name": "Users"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "IncidentSearchResponseWrapper": {
       "description": "IncidentSearchResponseWrapper is an extension for the IncidentSearchResponse type, which holds list of IncidentWrapper(s)",
@@ -5158,13 +5158,13 @@
           "x-go-name": "Total"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IncidentStatus": {
       "description": "IncidentStatus is the status of the incident",
       "type": "number",
       "format": "double",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IncidentType": {
       "type": "object",
@@ -5295,7 +5295,7 @@
           "x-go-name": "WeeksReminder"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IncidentWrapper": {
       "description": "IncidentWrapper is an extension of the Incident entity, which includes an additional field of changed-status for the web client",
@@ -5593,7 +5593,7 @@
       "additionalProperties": {
         "type": "object"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Incidents": {
       "description": "Incidents is a list of incident entities"
@@ -5613,7 +5613,7 @@
           "x-go-name": "Updated"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "IndicatorFilter": {
       "description": "IndicatorFilter is a general filter that fetches entities using a query string query using the Query value",
@@ -5712,7 +5712,7 @@
           "x-go-name": "ToDate"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "IndicatorResult": {
       "type": "object",
@@ -5727,7 +5727,7 @@
           "x-go-name": "Total"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "InsightCache": {
       "description": "InsightCache - map insight name to all its metadata, name will be case insensitive",
@@ -5767,7 +5767,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InstanceClassifier": {
       "description": "InstanceClassifier - classifies an incident from a specific brand",
@@ -5878,7 +5878,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IntegrationScript": {
       "type": "object",
@@ -5930,7 +5930,7 @@
           "$ref": "#/definitions/ScriptType"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvPlaybookTaskCompleteData": {
       "type": "object",
@@ -5996,7 +5996,7 @@
           "x-go-name": "WillNotExecuteCount"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvPlaybookTaskData": {
       "type": "object",
@@ -6037,7 +6037,7 @@
           "x-go-name": "Tags"
         }
       },
-      "x-go-package": "github.com/demisto/server/services"
+      "x-go-package": "github.com/khulnasoft-lab/server/services"
     },
     "Investigation": {
       "description": "A special investigation called playground is created for each user-project combination and is a private space for the researcher to play in.",
@@ -6132,7 +6132,7 @@
           "x-go-name": "MirrorAutoClose"
         },
         "mirrorTypes": {
-          "description": "MirrorTypes holds info about mirror direction and message type to be mirrored\nmessage type can be either 'all' or 'chat'\ndirection can be either 'FromDemisto', 'ToDemisto' or 'Both' if this investigation is mirrored",
+          "description": "MirrorTypes holds info about mirror direction and message type to be mirrored\nmessage type can be either 'all' or 'chat'\ndirection can be either 'FromXsoar', 'ToXsoar' or 'Both' if this investigation is mirrored",
           "type": "object",
           "additionalProperties": {
             "type": "string"
@@ -6205,7 +6205,7 @@
           "x-go-name": "DeprecatedSlackMirrorAutoClose"
         },
         "slackMirrorType": {
-          "description": "DEPRECATED - DeprecatedSlackMirrorType holds info about mirror direction and message type to be mirror\nmessage type can be either 'all' or 'chat'\ndirection can be either 'demisto2Slack', 'slack2Demisto' or 'both' if this investigation is mirrored to Slack",
+          "description": "DEPRECATED - DeprecatedSlackMirrorType holds info about mirror direction and message type to be mirror\nmessage type can be either 'all' or 'chat'\ndirection can be either 'demisto2Slack', 'slack2Xsoar' or 'both' if this investigation is mirrored to Slack",
           "type": "string",
           "x-go-name": "DeprecatedSlackMirrorType"
         },
@@ -6252,7 +6252,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvestigationFilter": {
       "type": "object",
@@ -6411,7 +6411,7 @@
           "x-go-name": "User"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "InvestigationPlaybook": {
       "description": "InvestigationPlaybook is a wrapper for a linked list of Playbook tasks",
@@ -6560,7 +6560,7 @@
           "$ref": "#/definitions/PlaybookView"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvestigationPlaybookData": {
       "description": "InvestigationPlaybookData returns all data of an investigation playbook, not including history",
@@ -6639,12 +6639,12 @@
           "$ref": "#/definitions/PlaybookView"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvestigationPlaybookState": {
       "description": "InvestigationPlaybookState indicates the state of the running playbook",
       "type": "string",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvestigationPlaybookTask": {
       "description": "InvestigationPlaybookTask is the Task in the playbook context as a node",
@@ -6921,7 +6921,7 @@
           "x-go-name": "WillNotExecuteCount"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvestigationPlaybookTasksAPI": {
       "description": "InvestigationPlaybookTasksAPI is the wrapper around an investigation task and it's parent inv id",
@@ -6949,7 +6949,7 @@
           "$ref": "#/definitions/InvestigationPlaybookTask"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvestigationSearchResponse": {
       "description": "InvestigationSearchResponse returns the response from the investigation search",
@@ -6969,19 +6969,19 @@
           "x-go-name": "Total"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "InvestigationStatus": {
       "description": "InvestigationStatus is the status type",
       "type": "number",
       "format": "double",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "InvestigationType": {
       "type": "number",
       "format": "double",
       "title": "InvestigationType ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Investigations": {
       "description": "Investigations is a slice of investigation",
@@ -6989,7 +6989,7 @@
       "items": {
         "$ref": "#/definitions/Investigation"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IocObject": {
       "description": "IocObject - represents an Ioc (or simply an indicator) object",
@@ -7109,7 +7109,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "IocObjects": {
       "type": "array",
@@ -7117,7 +7117,7 @@
       "items": {
         "$ref": "#/definitions/IocObject"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Label": {
       "type": "object",
@@ -7132,7 +7132,7 @@
           "x-go-name": "Value"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Layout": {
       "type": "object",
@@ -7233,7 +7233,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "LayoutAPI": {
       "description": "LayoutAPI - request sent from the client contains some or all\nof the fields.",
@@ -7251,7 +7251,7 @@
           "x-go-name": "TypeID"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "LayoutField": {
       "type": "object",
@@ -7297,7 +7297,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "LayoutSection": {
       "type": "object",
@@ -7370,7 +7370,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Location": {
       "type": "object",
@@ -7396,14 +7396,14 @@
           "x-go-name": "Start"
         }
       },
-      "x-go-package": "github.com/demisto/server/vendor/github.com/blevesearch/bleve/search"
+      "x-go-package": "github.com/khulnasoft-lab/server/vendor/github.com/blevesearch/bleve/search"
     },
     "Locations": {
       "type": "array",
       "items": {
         "$ref": "#/definitions/Location"
       },
-      "x-go-package": "github.com/demisto/server/vendor/github.com/blevesearch/bleve/search"
+      "x-go-package": "github.com/khulnasoft-lab/server/vendor/github.com/blevesearch/bleve/search"
     },
     "Mapper": {
       "description": "Mapper - mapper for new incidents",
@@ -7422,7 +7422,7 @@
           "x-go-name": "InternalMapping"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ModuleArgs": {
       "description": "ModuleArgs represents module args",
@@ -7430,7 +7430,7 @@
       "additionalProperties": {
         "type": "object"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ModuleConfiguration": {
       "description": "ModuleConfiguration is the configuration parameters for a module",
@@ -7579,7 +7579,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "NotifiableItem": {
       "type": "object",
@@ -7626,7 +7626,7 @@
           "$ref": "#/definitions/AdvanceArg"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "NotifyTimings": {
       "type": "object",
@@ -7648,7 +7648,7 @@
           "x-go-name": "RetriesInterval"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "OperatorArgument": {
       "type": "object",
@@ -7662,7 +7662,7 @@
           "$ref": "#/definitions/AdvanceArg"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Order": {
       "description": "Order struct holds a sort field and the direction of sorting",
@@ -7681,7 +7681,7 @@
           "x-go-name": "FieldType"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Output": {
       "description": "Output of a module command",
@@ -7704,12 +7704,12 @@
           "$ref": "#/definitions/OutputType"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "OutputType": {
       "type": "string",
       "title": "OutputType ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Period": {
       "type": "object",
@@ -7743,7 +7743,7 @@
           "x-go-name": "ToValue"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Playbook": {
       "description": "Playbook is a collection of tasks",
@@ -7946,7 +7946,7 @@
           "$ref": "#/definitions/PlaybookView"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "PlaybookInput": {
       "description": "PlaybookInput represents the playbook input",
@@ -7968,7 +7968,7 @@
           "$ref": "#/definitions/AdvanceArg"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "PlaybookInputs": {
       "description": "PlaybookInputs - array of PlaybookInput",
@@ -7976,7 +7976,7 @@
       "items": {
         "$ref": "#/definitions/PlaybookInput"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "PlaybookOutput": {
       "description": "PlaybookOutput represents the playbook output",
@@ -7994,7 +7994,7 @@
           "$ref": "#/definitions/OutputType"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "PlaybookOutputs": {
       "description": "PlaybookOutputs - array of PlaybookOutput",
@@ -8002,7 +8002,7 @@
       "items": {
         "$ref": "#/definitions/PlaybookOutput"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "PlaybookTask": {
       "type": "object",
@@ -8099,7 +8099,7 @@
           "x-go-name": "SeparateContext"
         },
         "skipUnavailable": {
-          "description": "SkipUnavailable if true then will check if automation exists, integration of that command is installed and\nactive or sub playbook exists in Demisto",
+          "description": "SkipUnavailable if true then will check if automation exists, integration of that command is installed and\nactive or sub playbook exists in Xsoar",
           "type": "boolean",
           "x-go-name": "SkipUnavailable"
         },
@@ -8131,12 +8131,12 @@
           "$ref": "#/definitions/TaskView"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "PlaybookView": {
       "description": "PlaybookView represents the view in client of playbook graph",
       "type": "object",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Question": {
       "type": "object",
@@ -8198,13 +8198,13 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "QuietMode": {
       "description": "QuietMode quiet mode for playbook task",
       "type": "integer",
       "format": "int64",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "RawMessage": {
       "description": "It implements Marshaler and Unmarshaler and can\nbe used to delay JSON decoding or precompute a JSON encoding.",
@@ -8219,7 +8219,7 @@
     "Reliability": {
       "type": "string",
       "title": "Reliability ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Report": {
       "description": "Report - represents report",
@@ -8424,7 +8424,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ReportAutomation": {
       "type": "object",
@@ -8446,7 +8446,7 @@
           "x-go-name": "NoEvent"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ReportFieldsDecoder": {
       "type": "object",
@@ -8461,7 +8461,7 @@
           "x-go-name": "Value"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ReportQuery": {
       "type": "object",
@@ -8489,7 +8489,7 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Reputation": {
       "description": "This struct is store in the BOLT data store and not indexed into bleve",
@@ -8719,13 +8719,13 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ReputationCalcAlg": {
       "type": "number",
       "format": "double",
       "title": "ReputationCalcAlg ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ReputationData": {
       "description": "ReputationData holds the reputation data (reputation, regex, highlights result)",
@@ -8749,12 +8749,12 @@
           "x-go-name": "Term"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "RunStatus": {
       "description": "RunStatus of a job",
       "type": "string",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "SLA": {
       "type": "object",
@@ -8776,13 +8776,13 @@
           "x-go-name": "Weeks"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "SLAState": {
       "description": "SLAState is the incident sla at closure time",
       "type": "number",
       "format": "double",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ScriptAPI": {
       "type": "object",
@@ -8909,23 +8909,23 @@
           "x-go-name": "Version"
         }
       },
-      "x-go-package": "github.com/demisto/server/services/automation"
+      "x-go-package": "github.com/khulnasoft-lab/server/services/automation"
     },
     "ScriptSubType": {
       "description": "ScriptSubType holds the script type version",
       "type": "string",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ScriptTarget": {
       "description": "ScriptTarget represents the module where this script should run",
       "type": "integer",
       "format": "int64",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "ScriptType": {
       "description": "ScriptType holds the type of a script",
       "type": "string",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "SearchIncidentsData": {
       "type": "object",
@@ -8939,7 +8939,7 @@
           "x-go-name": "FilterByUser"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "Section": {
       "type": "object",
@@ -8995,7 +8995,7 @@
           "x-go-name": "Type"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "SectionItem": {
       "type": "object",
@@ -9041,13 +9041,13 @@
           "x-go-name": "StartCol"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Severity": {
       "description": "Severity is the incident severity",
       "type": "number",
       "format": "double",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "StatsQueryResponse": {
       "type": "object",
@@ -9063,7 +9063,7 @@
           "x-go-name": "WidgetCellID"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "StatsTextResponse": {
       "type": "object",
@@ -9078,7 +9078,7 @@
           "x-go-name": "Text"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "StatsTrendsResponse": {
       "description": "StatsTrendsResponse - Represent a trend response from statistics. Provides information about\nthe current value and the previous value based on the period.",
@@ -9095,7 +9095,7 @@
           "x-go-name": "PrevSum"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "System": {
       "description": "System - URL stands for ip or hostname",
@@ -9178,7 +9178,7 @@
           "x-go-name": "Workgroup"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "SystemAgent": {
       "description": "SystemAgent - represents agent status and holds server context",
@@ -9193,7 +9193,7 @@
           "x-go-name": "ServerContext"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "Task": {
       "description": "Task is the basic task in the task repository that can be associated to an incident via playbook",
@@ -9282,7 +9282,7 @@
           "x-go-name": "Versn"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TaskCondition": {
       "description": "TaskCondition - contains a condition and a corresponding label\nif the condition satisfied - its label is taken as the next task(s) input (e.i. the label on the edge)",
@@ -9300,7 +9300,7 @@
           "x-go-name": "Label"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TaskLoop": {
       "description": "TaskLoop contains loop details",
@@ -9346,29 +9346,29 @@
           "x-go-name": "WaitBetweenIterations"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TaskState": {
       "description": "TaskState indicates the state of the task during the incident/investigation execution",
       "type": "string",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TaskType": {
       "description": "TaskType is the Task in the playbook context as a node",
       "type": "string",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TaskView": {
       "description": "TaskView represents the view in client of the tasks graph",
       "type": "object",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TermLocationMap": {
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/Locations"
       },
-      "x-go-package": "github.com/demisto/server/vendor/github.com/blevesearch/bleve/search"
+      "x-go-package": "github.com/khulnasoft-lab/server/vendor/github.com/blevesearch/bleve/search"
     },
     "TerminalOptions": {
       "description": "TerminalOptions - terminal options to use in case of using pty",
@@ -9401,12 +9401,12 @@
           "format": "uint32"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TimerAction": {
       "type": "string",
       "title": "TimerAction ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TimerTrigger": {
       "type": "object",
@@ -9420,12 +9420,12 @@
           "x-go-name": "FieldName"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "TransformerOperatorID": {
       "type": "string",
       "title": "TransformerOperatorID ...",
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "UpdateDataBatch": {
       "type": "object",
@@ -9490,7 +9490,7 @@
           "x-go-name": "OverrideInvestigation"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "Version": {
       "type": "object",
@@ -9507,7 +9507,7 @@
           "type": "string"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "UpdateResponse": {
       "type": "object",
@@ -9526,7 +9526,7 @@
           "x-go-name": "UpdatedIds"
         }
       },
-      "x-go-package": "github.com/demisto/server/repo/entities"
+      "x-go-package": "github.com/khulnasoft-lab/server/repo/entities"
     },
     "Widget": {
       "description": "Widget describe a widget component used to get statistics requests, based on parameters such as\ndataType and widgetType. A widget can be a part of widgets collection inside a dashboard.",
@@ -9640,7 +9640,7 @@
           "x-go-name": "WidgetType"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "WidgetCell": {
       "type": "object",
@@ -9682,7 +9682,7 @@
           "x-go-name": "Ys"
         }
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "WidgetCells": {
       "type": "array",
@@ -9690,7 +9690,7 @@
       "items": {
         "$ref": "#/definitions/WidgetCell"
       },
-      "x-go-package": "github.com/demisto/server/domain"
+      "x-go-package": "github.com/khulnasoft-lab/server/domain"
     },
     "auditResult": {
       "type": "object",
@@ -9708,7 +9708,7 @@
           "x-go-name": "Total"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "automationScriptFilter": {
       "description": "automationScriptFilter is a general filter that fetches entities using a query string query using the Query value",
@@ -9769,7 +9769,7 @@
           "x-go-name": "StripContext"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "automationScriptFilterWrapper": {
       "type": "object",
@@ -9786,7 +9786,7 @@
           "$ref": "#/definitions/AutomationScript"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "automationScriptResult": {
       "type": "object",
@@ -9818,7 +9818,7 @@
           "x-go-name": "Tags"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "deleteEvidence": {
       "type": "object",
@@ -9828,7 +9828,7 @@
           "x-go-name": "EvidenceID"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "dockerImage": {
       "description": "dockerImage details",
@@ -9859,7 +9859,7 @@
           "x-go-name": "Tag"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "dockerImagesResult": {
       "type": "object",
@@ -9872,7 +9872,7 @@
           "x-go-name": "Images"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "evidencesFilterWrapper": {
       "type": "object",
@@ -9885,7 +9885,7 @@
           "x-go-name": "IncidentID"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "genericIndicatorUpdateBatch": {
       "type": "object",
@@ -9927,7 +9927,7 @@
           "x-go-name": "Reputations"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "indicatorContext": {
       "type": "object",
@@ -9948,7 +9948,7 @@
           "x-go-name": "SeenNow"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "invPlaybookAssignee": {
       "type": "object",
@@ -9971,7 +9971,7 @@
           "x-go-name": "Version"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "invPlaybookDue": {
       "type": "object",
@@ -9995,7 +9995,7 @@
           "x-go-name": "Version"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "invTaskInfo": {
       "type": "object",
@@ -10050,7 +10050,7 @@
           "x-go-name": "Version"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "newDockerImage": {
       "type": "object",
@@ -10078,7 +10078,7 @@
           "x-go-name": "Packages"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "newDockerImageResult": {
       "type": "object",
@@ -10088,11 +10088,11 @@
           "x-go-name": "Output"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "remoteRepos": {
       "type": "object",
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "updateEntry": {
       "type": "object",
@@ -10126,7 +10126,7 @@
           "x-go-name": "Version"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "reputationsWithErrors": {
       "type": "object",
@@ -10143,7 +10143,7 @@
           "x-go-name": "Reputations"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "updateEntryTags": {
       "type": "object",
@@ -10169,7 +10169,7 @@
           "x-go-name": "Version"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "updateIndicatorReputationData": {
       "type": "object",
@@ -10211,7 +10211,7 @@
           "x-go-name": "Value"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     },
     "uploadedEntry": {
       "type": "object",
@@ -10229,7 +10229,7 @@
           "x-go-name": "InvestigationID"
         }
       },
-      "x-go-package": "github.com/demisto/server/web"
+      "x-go-package": "github.com/khulnasoft-lab/server/web"
     }
   },
   "securityDefinitions": {

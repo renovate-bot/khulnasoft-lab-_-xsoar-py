@@ -1,14 +1,14 @@
 from __future__ import print_function
-import demisto_client.demisto_api
-from demisto_client.demisto_api.rest import ApiException
+import xsoar_client.xsoar_api
+from xsoar_client.xsoar_api.rest import ApiException
 from pprint import pprint
 
 api_key = 'YOUR API KEY'
-base_url = 'YOUR DEMISTO URL'
+base_url = 'YOUR XSOAR URL'
 
 # create an instance of the API class
-api_instance = demisto_client.configure(base_url=base_url, api_key=api_key, debug=True)
-widget = demisto_client.demisto_api.Widget()
+api_instance = xsoar_client.configure(base_url=base_url, api_key=api_key, debug=True)
+widget = xsoar_client.xsoar_api.Widget()
 
 widget.name = 'Active Incidents - Pie chart'
 widget.query = '-category:job and -status:archived and -status:closed'

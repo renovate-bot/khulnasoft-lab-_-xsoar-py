@@ -1,6 +1,6 @@
 {
-    "packageName": "demisto_client.demisto_api",
-    "projectName": "demisto-py",
+    "packageName": "xsoar_client.xsoar_api",
+    "projectName": "xsoar-py",
     "packageVersion": "2.0.0",
-    "packageUrl": "https://github.com/demisto/demisto-py"
+    "packageUrl": "https://github.com/khulnasoft-lab/xsoar-py"
 }

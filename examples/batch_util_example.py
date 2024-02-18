@@ -1,14 +1,14 @@
 from __future__ import print_function
-import demisto_client.demisto_api
-from demisto_client.demisto_api.rest import ApiException
+import xsoar_client.xsoar_api
+from xsoar_client.xsoar_api.rest import ApiException
 from pprint import pprint
 
 api_key = 'YOUR API KEY'
-base_url = 'YOUR DEMISTO URL'
+base_url = 'YOUR XSOAR URL'
 
 # create an instance of the API class
-api_instance = demisto_client.configure(base_url=base_url, api_key=api_key, debug=False)
-update_data_batch = demisto_client.demisto_api.UpdateDataBatch()
+api_instance = xsoar_client.configure(base_url=base_url, api_key=api_key, debug=False)
+update_data_batch = xsoar_client.xsoar_api.UpdateDataBatch()
 
 update_data_batch.ids = ['1001', '1002', '1003']
 update_data_batch.close_notes = 'Incident is a duplicate to incident 1000'

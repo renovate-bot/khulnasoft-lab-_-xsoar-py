@@ -1,16 +1,16 @@
 from __future__ import print_function
-import demisto_client.demisto_api
-from demisto_client.demisto_api.rest import ApiException
+import xsoar_client.xsoar_api
+from xsoar_client.xsoar_api.rest import ApiException
 from pprint import pprint
 
 api_key = 'YOUR API KEY'
-base_url = 'YOUR DEMISTO URL'
+base_url = 'YOUR XSOAR URL'
 
 # create an instance of the API class
-api_instance = demisto_client.configure(base_url=base_url, api_key=api_key, debug=True)
-automation_script_filter_wrapper = demisto_client.demisto_api.AutomationScriptFilterWrapper()
-script = demisto_client.demisto_api.AutomationScript()
-args = demisto_client.demisto_api.Argument()
+api_instance = xsoar_client.configure(base_url=base_url, api_key=api_key, debug=True)
+automation_script_filter_wrapper = xsoar_client.xsoar_api.AutomationScriptFilterWrapper()
+script = xsoar_client.xsoar_api.AutomationScript()
+args = xsoar_client.xsoar_api.Argument()
 
 # Create Arguments
 args.name = 'system'

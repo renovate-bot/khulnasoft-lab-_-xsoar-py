@@ -14,36 +14,36 @@ else
     INPLACE=('')
 fi
 
-rm -rf demisto_client/demisto_api
+rm -rf xsoar_client/xsoar_api
 rm -rf docs
-mkdir -p demisto_client
+mkdir -p xsoar_client
 mv README.md README.md.org
 docker run --rm -it -u `id -u` -v `pwd`:/work -w /work swaggerapi/swagger-codegen-cli:2.4.7 generate -i /work/server_api_swagger.json -l python -o /work -c /work/swagger-config.json
 rm -rf test
-mv demisto_client.demisto_api/*.py demisto_client/demisto_api/.
-mv demisto_client.demisto_api/api/*.py demisto_client/demisto_api/api/.
-mv demisto_client.demisto_api/models/*.py demisto_client/demisto_api/models/.
-rmdir demisto_client.demisto_api/api
-rmdir demisto_client.demisto_api/models
-rmdir demisto_client.demisto_api
+mv xsoar_client.xsoar_api/*.py xsoar_client/xsoar_api/.
+mv xsoar_client.xsoar_api/api/*.py xsoar_client/xsoar_api/api/.
+mv xsoar_client.xsoar_api/models/*.py xsoar_client/xsoar_api/models/.
+rmdir xsoar_client.xsoar_api/api
+rmdir xsoar_client.xsoar_api/models
+rmdir xsoar_client.xsoar_api
 mv README.md docs/.
 mv README.md.org README.md
 # Not clear why python fails on these imports
-sed -i "${INPLACE[@]}" -e 's/^from demisto_client.demisto_api.models.advance_arg import AdvanceArg/# &/' demisto_client/demisto_api/models/operator_argument.py
-sed -i "${INPLACE[@]}" -e 's/^from demisto_client.demisto_api.models.group import Group/# &/' demisto_client/demisto_api/models/groups.py
-sed -i "${INPLACE[@]}" -e 's/^from demisto_client.demisto_api.models.investigation_playbook import InvestigationPlaybook/# &/' demisto_client/demisto_api/models/investigation_playbook_task.py
+sed -i "${INPLACE[@]}" -e 's/^from xsoar_client.xsoar_api.models.advance_arg import AdvanceArg/# &/' xsoar_client/xsoar_api/models/operator_argument.py
+sed -i "${INPLACE[@]}" -e 's/^from xsoar_client.xsoar_api.models.group import Group/# &/' xsoar_client/xsoar_api/models/groups.py
+sed -i "${INPLACE[@]}" -e 's/^from xsoar_client.xsoar_api.models.investigation_playbook import InvestigationPlaybook/# &/' xsoar_client/xsoar_api/models/investigation_playbook_task.py
 
 # __api_call needs to work with dict objects and not Classes when updating data such as POST requests
-sed -i "${INPLACE[@]}" -e 's/config = self.configuration/&; body = demisto_client.to_extended_dict(body)  # noqa: E702/' demisto_client/demisto_api/api_client.py
+sed -i "${INPLACE[@]}" -e 's/config = self.configuration/&; body = xsoar_client.to_extended_dict(body)  # noqa: E702/' xsoar_client/xsoar_api/api_client.py
 # Update the docs
-sed -i "${INPLACE[@]}" -e '/# demisto-py/,/## Documentation for API Endpoints/d' docs/README.md
+sed -i "${INPLACE[@]}" -e '/# xsoar-py/,/## Documentation for API Endpoints/d' docs/README.md
 echo '## Documentation for API Endpoints' | cat - docs/README.md > readme.temp && mv readme.temp docs/README.md
 sed -i "${INPLACE[@]}" -e 's#(docs/#(#' docs/*.md
 sed -i "${INPLACE[@]}" -e 's#(../README.md#(README.md#g' docs/*.md
-sed -i "${INPLACE[@]}" -e '/# Configure API key authorization: api_key/,/DefaultApi(demisto_client.demisto_api.ApiClient(configuration))/c\
-api_instance = demisto_client.configure(base_url="https://YOUR_DEMISTO_SERVER", api_key="YOUR_API_KEY")' docs/DefaultApi.md
+sed -i "${INPLACE[@]}" -e '/# Configure API key authorization: api_key/,/DefaultApi(xsoar_client.xsoar_api.ApiClient(configuration))/c\
+api_instance = xsoar_client.configure(base_url="https://YOUR_XSOAR_SERVER", api_key="YOUR_API_KEY")' docs/DefaultApi.md
 sed -i "${INPLACE[@]}" -e '/import time/ a\
-import demisto_client' docs/DefaultApi.md
+import xsoar_client' docs/DefaultApi.md
 sed -i "${INPLACE[@]}" -e 's/> InstanceClassifier import_classifier(file, classifier_id)/> InstanceClassifier import_classifier(file)/' docs/DefaultApi.md
 sed -i "${INPLACE[@]}" -e 's/api_response = api_instance.import_classifier(file, classifier_id)/api_response = api_instance.import_classifier(file)/' docs/DefaultApi.md
 sed -i "${INPLACE[@]}" -e 's/> LayoutAPI import_layout(file, type, kind)/> LayoutAPI import_layout(file)/' docs/DefaultApi.md
@@ -60,88 +60,88 @@ sed -i "${INPLACE[@]}" -e 's#^\*DefaultApi\* \| ##g' docs/README.md
 sed -i "${INPLACE[@]}" -e 's/^## Author//g' docs/README.md
 # add ability for generic requests
 sed -i "${INPLACE[@]}" -e 's/import six/import six\
-import demisto_client/g' demisto_client/demisto_api/api/default_api.py
-echo -e "\n    def generic_request(self, path, method, body=None, **kwargs):  # noqa: E501\n        return demisto_client.generic_request_func(self, path, method, body, **kwargs)" >> demisto_client/demisto_api/api/default_api.py
+import xsoar_client/g' xsoar_client/xsoar_api/api/default_api.py
+echo -e "\n    def generic_request(self, path, method, body=None, **kwargs):  # noqa: E501\n        return xsoar_client.generic_request_func(self, path, method, body, **kwargs)" >> xsoar_client/xsoar_api/api/default_api.py
 # fix bug where binary data is decoded on py3
-sed -i "${INPLACE[@]}" -e 's#if six\.PY3:#if six.PY3 and r.getheader("Content-Type") != "application/octet-stream" and r.getheader("Content-Type") != "application/gzip":#' demisto_client/demisto_api/rest.py
+sed -i "${INPLACE[@]}" -e 's#if six\.PY3:#if six.PY3 and r.getheader("Content-Type") != "application/octet-stream" and r.getheader("Content-Type") != "application/gzip":#' xsoar_client/xsoar_api/rest.py
 # Disable sensitive logging by default
 sed -i "${INPLACE[@]}" -e 's/import ssl/import ssl\
-import os/g' demisto_client/demisto_api/rest.py
+import os/g' xsoar_client/xsoar_api/rest.py
 sed -i "${INPLACE[@]}" -e 's/"""Custom error messages for exception"""/"""Custom error messages for exception"""\
-        sensitive_env = os.getenv("DEMISTO_EXCEPTION_HEADER_LOGGING")\
+        sensitive_env = os.getenv("XSOAR_EXCEPTION_HEADER_LOGGING")\
         if sensitive_env:\
             sensitive_logging = sensitive_env.lower() in ["true", "1", "yes"]\
         else:\
-            sensitive_logging = False/' demisto_client/demisto_api/rest.py
+            sensitive_logging = False/' xsoar_client/xsoar_api/rest.py
 
 sed -i "${INPLACE[@]}" -e 's/import urllib3/import urllib3\
-    import urllib/'  demisto_client/demisto_api/rest.py
+    import urllib/'  xsoar_client/xsoar_api/rest.py
 sed -i "${INPLACE[@]}" -e 's/if configuration.proxy:/if configuration.proxy:\
             proxy_headers = None\
             parsed_proxy_url = urllib3.util.parse_url(configuration.proxy)\
             if parsed_proxy_url.auth is not None:\
                 configuration.proxy_auth = urllib.parse.unquote(parsed_proxy_url.auth)\
                 proxy_headers = urllib3.util.make_headers(proxy_basic_auth=configuration.proxy_auth)\
-/' demisto_client/demisto_api/rest.py
+/' xsoar_client/xsoar_api/rest.py
 
 sed -i "${INPLACE[@]}" -e 's/proxy_url=configuration.proxy,/proxy_headers=proxy_headers,\
-                proxy_url=configuration.proxy,/' demisto_client/demisto_api/rest.py
+                proxy_url=configuration.proxy,/' xsoar_client/xsoar_api/rest.py
 
-sed -i "${INPLACE[@]}" -e 's#        if self.headers:#        if self.headers and sensitive_logging:#' demisto_client/demisto_api/rest.py
+sed -i "${INPLACE[@]}" -e 's#        if self.headers:#        if self.headers and sensitive_logging:#' xsoar_client/xsoar_api/rest.py
 # Fix import layout command
-start=`grep "verify the required parameter 'type'" demisto_client/demisto_api/api/default_api.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
-end=`grep ".kind. when calling .import_layout." demisto_client/demisto_api/api/default_api.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
-sed -i "${INPLACE[@]}" -e "$start,${end}d" demisto_client/demisto_api/api/default_api.py
-kind_line=`grep "'kind' in params:" -n demisto_client/demisto_api/api/default_api.py | cut -f1 -d: | tr -d "\\n"`
+start=`grep "verify the required parameter 'type'" xsoar_client/xsoar_api/api/default_api.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
+end=`grep ".kind. when calling .import_layout." xsoar_client/xsoar_api/api/default_api.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
+sed -i "${INPLACE[@]}" -e "$start,${end}d" xsoar_client/xsoar_api/api/default_api.py
+kind_line=`grep "'kind' in params:" -n xsoar_client/xsoar_api/api/default_api.py | cut -f1 -d: | tr -d "\\n"`
 start=$((kind_line-4))
 end=$((kind_line+1))
-sed -i "${INPLACE[@]}" -e "$start,$end s/if \(.*\) in params/if params.get(\1, None)/" demisto_client/demisto_api/api/default_api.py
-sed -i "${INPLACE[@]}" -e "s:'/v2/layouts/import', 'POST',:demisto_client.get_layouts_url_for_demisto_version(self.api_client, params), 'POST',:" demisto_client/demisto_api/api/default_api.py
+sed -i "${INPLACE[@]}" -e "$start,$end s/if \(.*\) in params/if params.get(\1, None)/" xsoar_client/xsoar_api/api/default_api.py
+sed -i "${INPLACE[@]}" -e "s:'/v2/layouts/import', 'POST',:xsoar_client.get_layouts_url_for_demisto_version(self.api_client, params), 'POST',:" xsoar_client/xsoar_api/api/default_api.py
 
-sed -i "${INPLACE[@]}" -e 's/def import_layout(self, file, type, kind, \*\*kwargs):/def import_layout(self, file, \*\*kwargs):/' demisto_client/demisto_api/api/default_api.py
+sed -i "${INPLACE[@]}" -e 's/def import_layout(self, file, type, kind, \*\*kwargs):/def import_layout(self, file, \*\*kwargs):/' xsoar_client/xsoar_api/api/default_api.py
 
-sed -i "${INPLACE[@]}" -e '/import demisto_client/ a\
-import json' demisto_client/demisto_api/api/default_api.py
+sed -i "${INPLACE[@]}" -e '/import xsoar_client/ a\
+import json' xsoar_client/xsoar_api/api/default_api.py
 
-ret_line=`grep "return self.import_layout_with_http_info" demisto_client/demisto_api/api/default_api.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
+ret_line=`grep "return self.import_layout_with_http_info" xsoar_client/xsoar_api/api/default_api.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
 start=$((ret_line-3))
 sed -i "${INPLACE[@]}" -e "${start}a\\
 \ \ \ \ \ \ \ \ with open(file, 'r') as layout_json_file:\\
 \ \ \ \ \ \ \ \ \ \ \ \ data = layout_json_file.read()\\
 \ \ \ \ \ \ \ \ layout_data_json = json.loads(data)\\
 \ \ \ \ \ \ \ \ type = layout_data_json.get('typeId')\\
-\ \ \ \ \ \ \ \ kind = layout_data_json.get('kind')" demisto_client/demisto_api/api/default_api.py
+\ \ \ \ \ \ \ \ kind = layout_data_json.get('kind')" xsoar_client/xsoar_api/api/default_api.py
 
 # End fix import layout
 
 # fix import_classifier
-sed -i "${INPLACE[@]}" -e 's/def import_classifier(self, file, classifier_id, \*\*kwargs):  # noqa: E501/def import_classifier(self, file, \*\*kwargs):  # noqa: E501/' demisto_client/demisto_api/api/default_api.py
-sed -i "${INPLACE[@]}" -e 's/>>> thread = api.import_classifier(file, classifier_id, async_req=True)/>>> thread = api.import_classifier(file, async_req=True)/' demisto_client/demisto_api/api/default_api.py
-del=`grep ":param str classifier_id: associated typeID for the layout (required)" demisto_client/demisto_api/api/default_api.py -n | head -n1 | cut -d : -f1`
-sed -i "${INPLACE[@]}" -e "$del d" demisto_client/demisto_api/api/default_api.py
+sed -i "${INPLACE[@]}" -e 's/def import_classifier(self, file, classifier_id, \*\*kwargs):  # noqa: E501/def import_classifier(self, file, \*\*kwargs):  # noqa: E501/' xsoar_client/xsoar_api/api/default_api.py
+sed -i "${INPLACE[@]}" -e 's/>>> thread = api.import_classifier(file, classifier_id, async_req=True)/>>> thread = api.import_classifier(file, async_req=True)/' xsoar_client/xsoar_api/api/default_api.py
+del=`grep ":param str classifier_id: associated typeID for the layout (required)" xsoar_client/xsoar_api/api/default_api.py -n | head -n1 | cut -d : -f1`
+sed -i "${INPLACE[@]}" -e "$del d" xsoar_client/xsoar_api/api/default_api.py
 
-select=`grep "return self.import_classifier_with_http_info(file, classifier_id, \*\*kwargs)  # noqa: E501" demisto_client/demisto_api/api/default_api.py -n | head -n1 | cut -d : -f1`
+select=`grep "return self.import_classifier_with_http_info(file, classifier_id, \*\*kwargs)  # noqa: E501" xsoar_client/xsoar_api/api/default_api.py -n | head -n1 | cut -d : -f1`
 start=$((select-2))
 sed -i "${INPLACE[@]}" -e "${start}a\\
 \ \ \ \ \ \ \ \ with open(file, 'r') as classifier_json_file:\\
 \ \ \ \ \ \ \ \ \ \ \ \ data = classifier_json_file.read()\\
 \ \ \ \ \ \ \ \ classifier_data_json = json.loads(data)\\
-\ \ \ \ \ \ \ \ classifier_id = classifier_data_json.get('id')" demisto_client/demisto_api/api/default_api.py
+\ \ \ \ \ \ \ \ classifier_id = classifier_data_json.get('id')" xsoar_client/xsoar_api/api/default_api.py
 
 sed -i "${INPLACE[@]}" -e 's/PRIMITIVE_TYPES = (float, bool, bytes, six.text_type) + six.integer_types/CACHE_LAST_RESPONSE = not os.environ.get("DONT_CACHE_LAST_RESPONSE", False)\
     PRIMITIVE_TYPES = (float, bool, bytes, six.text_type) + six.integer_types/' -e 's/self.last_response = response_data/if self.CACHE_LAST_RESPONSE:\
-            self.last_response = response_data/' demisto_client/demisto_api/api_client.py
+            self.last_response = response_data/' xsoar_client/xsoar_api/api_client.py
 # End fix import_classifier
 # Fix return partial errors
-select_line=`grep "return self.__deserialize(data, response_type)" demisto_client/demisto_api/api_client.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
+select_line=`grep "return self.__deserialize(data, response_type)" xsoar_client/xsoar_api/api_client.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
 start_line=$((select_line))
 sed -i "${INPLACE[@]}" -e "${start_line}a\\
 \ \ \ \ \ \ \ \ deserialized_response = self.__deserialize(data, response_type)\\
 \ \ \ \ \ \ \ \ if isinstance(data, dict) and 'error' in data.keys():\\
 \ \ \ \ \ \ \ \ \ \ \ \ error_message = data.get('error')\\
 \ \ \ \ \ \ \ \ \ \ \ \ return {'response': deserialized_response, 'error': error_message}\\
-\ \ \ \ \ \ \ \ return deserialized_response" demisto_client/demisto_api/api_client.py
-sed -i "${INPLACE[@]}" -e "${start_line}d" demisto_client/demisto_api/api_client.py
+\ \ \ \ \ \ \ \ return deserialized_response" xsoar_client/xsoar_api/api_client.py
+sed -i "${INPLACE[@]}" -e "${start_line}d" xsoar_client/xsoar_api/api_client.py
 sed -i "${INPLACE[@]}" -e "s/header_params.update(self.default_headers)/header_params.update(self.default_headers)\\
         auth_signed_key = getattr(self.configuration, 'auth_signed_key', None)\\
         if auth_signed_key:\\
@@ -151,26 +151,26 @@ sed -i "${INPLACE[@]}" -e "s/header_params.update(self.default_headers)/header_p
                 'x-xdr-timestamp': timestamp,\\
                 'x-xdr-nonce': nonce,\\
                 'Authorization': sha256(f'{auth_signed_key}{nonce}{timestamp}'.encode()).hexdigest(),\\
-            })/" demisto_client/demisto_api/api_client.py
-sed -i "${INPLACE[@]}" -e "s/from demisto_client.demisto_api import rest/from demisto_client.demisto_api import rest\\
+            })/" xsoar_client/xsoar_api/api_client.py
+sed -i "${INPLACE[@]}" -e "s/from xsoar_client.xsoar_api import rest/from xsoar_client.xsoar_api import rest\\
 \\
 import secrets\\
 import string\\
 from hashlib import sha256\\
 \\
-NONCE_POSSIBLE_VALUES = string.ascii_letters + string.digits/" demisto_client/demisto_api/api_client.py
+NONCE_POSSIBLE_VALUES = string.ascii_letters + string.digits/" xsoar_client/xsoar_api/api_client.py
 # End fix return partial errors
 # Fix return str response
-select_start_line=`grep 'with open(path, "wb") as f:' demisto_client/demisto_api/api_client.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
+select_start_line=`grep 'with open(path, "wb") as f:' xsoar_client/xsoar_api/api_client.py -n | cut -f1 -d: | tail -1 | tr -d "\\n"`
 select_end_line=$((select_start_line + 1))
-sed -i "${INPLACE[@]}" -e "${select_start_line},${select_end_line}d" demisto_client/demisto_api/api_client.py
+sed -i "${INPLACE[@]}" -e "${select_start_line},${select_end_line}d" xsoar_client/xsoar_api/api_client.py
 sed -i "${INPLACE[@]}" -e "${select_start_line}i\\
 \ \ \ \ \ \ \ \ if isinstance(response.data, str):\\
 \ \ \ \ \ \ \ \ \ \ \ \ with open(path, 'w') as f:\\
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f.write(response.data)\\
 \ \ \ \ \ \ \ \ elif isinstance(response.data, bytes):\\
 \ \ \ \ \ \ \ \ \ \ \ \ with open(path, 'wb') as f:\\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f.write(response.data)" demisto_client/demisto_api/api_client.py
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f.write(response.data)" xsoar_client/xsoar_api/api_client.py
 # End fix return str response
 # remove files not used
 rm .travis.yml
@@ -180,4 +180,4 @@ echo "# DO NOT MODIFY CODE IN THIS DIRECTORY OR SUB-DIRS.
 
 Use gen-code.sh to perform any changes needed in generated code.
 
-" > demisto_client/demisto_api/README.md
+" > xsoar_client/xsoar_api/README.md
